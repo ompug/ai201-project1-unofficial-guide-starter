@@ -24,10 +24,10 @@ except Exception:  # pragma: no cover - optional runtime dependency
 ROOT = Path(__file__).resolve().parents[1]
 DOCUMENTS_DIR = ROOT / "documents" / "raw"
 CHROMA_DIR = ROOT / "chroma_db"
-COLLECTION_NAME = "ai201_unofficial_guide"
+COLLECTION_NAME = "must_watch_anime_guide"
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
-CHUNK_SIZE = 900
-CHUNK_OVERLAP = 180
+CHUNK_SIZE = 1000
+CHUNK_OVERLAP = 160
 TOP_K = 5
 HYBRID_SEMANTIC_WEIGHT = 0.65
 HYBRID_BM25_WEIGHT = 0.35
@@ -362,11 +362,11 @@ def _answer_with_groq(query: str, results: list[SearchResult]) -> str | None:
 
 def grounded_answer(query: str, results: list[SearchResult]) -> str:
     lowered_query = query.lower()
-    if "ucla" in lowered_query or "housing deposit deadline" in lowered_query:
-        return "I do not have enough information in the AI201 Project 1 guide corpus to answer that. The retrieved guide only covers AI201 Project 1 requirements, so answering a campus housing deadline would require unsupported outside knowledge."
+    if any(term in lowered_query for term in ["where can i stream", "streaming in", "netflix in", "crunchyroll price", "release date for season 2"]):
+        return "I do not have enough information in the must-watch anime guide corpus to answer that. The guide covers recommendation fit and acclaim, not current streaming availability, prices, or future release schedules."
 
     if not results or results[0].score < 0.12:
-        return "I do not have enough information in the AI201 Project 1 guide corpus to answer that. Please ask about the project planning, documents, chunking, retrieval, generation, interface, evaluation, stretch features, or AI usage requirements."
+        return "I do not have enough information in the must-watch anime guide corpus to answer that. Please ask about the anime titles, moods, genres, recommendation fit, or source-backed acclaim covered by the guide."
 
     groq_answer = _answer_with_groq(query, results)
     if groq_answer:
@@ -375,7 +375,8 @@ def grounded_answer(query: str, results: list[SearchResult]) -> str:
     query_terms = set(tokenize(query))
     selected: list[str] = []
     used_sources: list[str] = []
-    for result_index, result in enumerate(results[:5]):
+    usable_results = [result for result in results[:3] if result.score >= 0.45 or result == results[0]]
+    for result_index, result in enumerate(usable_results):
         sentences = re.split(r"(?<=[.!?])\s+", result.text)
         label = _source_label(result)
         if result_index == 0:
@@ -399,7 +400,7 @@ def grounded_answer(query: str, results: list[SearchResult]) -> str:
                 selected.append(cited)
                 used_sources.append(label)
                 added_for_source += 1
-            if added_for_source >= 2:
+            if added_for_source >= 1:
                 break
 
     if not selected:
@@ -433,7 +434,7 @@ def inspect_chunks(limit: int = 5) -> str:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Build and inspect the AI201 Project 1 RAG pipeline.")
+    parser = argparse.ArgumentParser(description="Build and inspect the must-watch anime RAG pipeline.")
     parser.add_argument("--reindex", action="store_true", help="Rebuild the ChromaDB index.")
     parser.add_argument("--inspect-chunks", action="store_true", help="Print representative chunks.")
     args = parser.parse_args()

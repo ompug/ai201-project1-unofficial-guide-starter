@@ -21,7 +21,7 @@ def run_query(
 
 
 def interactive(mode: str, top_k: int, category: str | None, show_chunks: bool) -> None:
-    print("AI201 Unofficial Guide. Type 'exit' to quit.")
+    print("Must-Watch Anime Guide. Type 'exit' to quit.")
     previous_question: str | None = None
     while True:
         question = input("\nQuestion: ").strip()
@@ -35,11 +35,11 @@ def interactive(mode: str, top_k: int, category: str | None, show_chunks: bool) 
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Query the AI201 Project 1 unofficial guide.")
+    parser = argparse.ArgumentParser(description="Query the must-watch anime guide.")
     parser.add_argument("question", nargs="?", help="Question to ask the RAG system.")
     parser.add_argument("--mode", choices=["semantic", "hybrid"], default="hybrid")
     parser.add_argument("--top-k", type=int, default=TOP_K)
-    parser.add_argument("--category", help="Optional metadata category filter, such as retrieval or evaluation.")
+    parser.add_argument("--category", help="Optional metadata category filter, such as movie, series, or guide.")
     parser.add_argument("--show-chunks", action="store_true", help="Show retrieved chunks after the answer.")
     parser.add_argument("--interactive", action="store_true", help="Start a multi-turn CLI session.")
     args = parser.parse_args()

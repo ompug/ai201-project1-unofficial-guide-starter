@@ -14,24 +14,24 @@ class EvalCase:
 
 EVAL_CASES = [
     EvalCase(
-        "How many source documents does the project need, and how should they be identified?",
-        "At least 10 documents, identified with specific URLs, subreddit names, file paths, or file descriptions.",
+        "What is a good gateway anime movie for someone new to anime?",
+        "Spirited Away is a strong gateway film; Your Name is also a modern accessible option.",
     ),
     EvalCase(
-        "What chunk size and overlap does this project use, and why?",
-        "900 characters with 180 characters of overlap, to preserve short advice thoughts while protecting transitions.",
+        "Which anime should I watch for cyberpunk and landmark animation?",
+        "Akira.",
     ),
     EvalCase(
-        "Which embedding model is used, and what top-k value does retrieval use?",
-        "sentence-transformers/all-MiniLM-L6-v2 with top-k 5.",
+        "What should I watch if I want a complete adventure series with a strong ending?",
+        "Fullmetal Alchemist: Brotherhood.",
     ),
     EvalCase(
-        "What must the system do when a query is not supported by the retrieved documents?",
-        "Refuse to answer and say the corpus does not contain enough information instead of guessing.",
+        "Which recommendation fits a recent thoughtful fantasy about memory and grief?",
+        "Frieren: Beyond Journey's End.",
     ),
     EvalCase(
-        "What does the README evaluation report need to include for each of the five test questions?",
-        "The question, expected answer, actual system response, retrieved chunks, and an accuracy judgment.",
+        "What anime should I avoid recommending as a casual comfort watch because it is emotionally devastating?",
+        "Grave of the Fireflies.",
     ),
 ]
 

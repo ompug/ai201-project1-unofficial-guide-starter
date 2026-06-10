@@ -14,9 +14,9 @@ class StrategyResult:
 
 
 QUERIES = [
-    "What chunk size and overlap should I use?",
-    "How should unsupported questions be handled?",
-    "What does AI usage transparency require?",
+    "What should I watch for cyberpunk and landmark animation?",
+    "What is a good gateway anime movie for someone new to anime?",
+    "Which anime is emotionally devastating and not a comfort watch?",
 ]
 
 
@@ -57,7 +57,7 @@ def main() -> None:
     for query in QUERIES:
         print(f"\nQuery: {query}")
         for result in [
-            top_bm25(query, paragraph_chunks, "paragraph-aware 900/180"),
+            top_bm25(query, paragraph_chunks, "paragraph-aware 1000/160"),
             top_bm25(query, fixed_chunks, "fixed 450/50"),
         ]:
             print(f"- {result.strategy}: {result.top_source} -> {result.top_chunk}...")

@@ -2,66 +2,66 @@
 
 ## Domain
 
-My domain is an unofficial student survival guide for completing CodePath AI201 Project 1. This knowledge is valuable because the assignment instructions and grading rubric are detailed, but students can still miss practical scoring details like sample chunks, refusal examples, retrieval explanations, and AI usage transparency. It is hard to find through one official channel because the requirements are spread across assignment milestones, hints, and rubric rows, and students benefit from a searchable guide that turns those scattered requirements into direct answers.
+My domain is highly acclaimed must-watch anime. I chose this because anime recommendations are easy to find in huge lists, but it is harder to get a grounded answer that explains *why* a title fits a specific viewer mood. Official pages usually give scores, summaries, or availability, while fan conversations often assume the reader already knows the major classics. This guide tries to combine critic/list evidence with practical recommendation notes for someone deciding what to watch next.
 
 ## Documents
 
 | # | Source | Description | URL or location |
 |---|--------|-------------|-----------------|
-| 1 | Student Notes - Choosing the Project 1 Domain | Domain and scope advice for the AI201 Project 1 survival guide | `documents/raw/01_domain_and_scope.txt` |
-| 2 | Student Notes - Document Collection Checklist | Checklist for collecting at least 10 documents and recording sources | `documents/raw/02_document_collection.txt` |
-| 3 | Student Notes - planning.md Must Be Written First | Requirements for planning.md, evaluation questions, and architecture | `documents/raw/03_planning_md_requirements.txt` |
-| 4 | Student Notes - Chunking Strategy for Short Advice Documents | Recommended chunk size, overlap, and chunk inspection advice | `documents/raw/04_chunking_strategy.txt` |
-| 5 | Student Notes - Ingestion and Cleaning | Notes on parsing metadata, cleaning documents, and validating output | `documents/raw/05_ingestion_cleaning.txt` |
-| 6 | Student Notes - Retrieval, Embeddings, and Hybrid Search | Embedding model, top-k, semantic retrieval, and BM25 hybrid notes | `documents/raw/06_retrieval_semantic_hybrid.txt` |
-| 7 | Student Notes - Grounded Generation and Source Attribution | Grounding prompt, refusal behavior, citations, and relevance threshold | `documents/raw/07_grounded_generation.txt` |
-| 8 | Student Notes - Query Interface Expectations | CLI fields, sample transcript expectations, filters, and memory mode | `documents/raw/08_query_interface.txt` |
-| 9 | Student Notes - Evaluation Report and Failure Case | Evaluation table, retrieval examples, and root-cause failure analysis | `documents/raw/09_evaluation_report.txt` |
-| 10 | Student Notes - Stretch Feature Strategy | Hybrid search, chunk comparison, metadata filtering, and memory stretch notes | `documents/raw/10_stretch_features.txt` |
-| 11 | Student Notes - AI Usage Transparency | Specific AI collaboration examples and revision expectations | `documents/raw/11_ai_usage_transparency.txt` |
-| 12 | Student Notes - Common Rubric Point Traps | Easy-to-miss README requirements from the grading rubric | `documents/raw/12_rubric_point_traps.txt` |
+| 1 | Spirited Away gateway film notes | Gateway movie recommendation using Rotten Tomatoes and BFI source context | `documents/raw/01_spirited_away_gateway.txt` |
+| 2 | Cowboy Bebop series notes | Classic stylish series recommendation using Rotten Tomatoes and IMDb source context | `documents/raw/02_cowboy_bebop_series.txt` |
+| 3 | Fullmetal Alchemist: Brotherhood notes | Complete adventure epic recommendation using MAL and IMDb source context | `documents/raw/03_fullmetal_alchemist_brotherhood.txt` |
+| 4 | Frieren modern fantasy notes | Recent fantasy recommendation using MAL and Decider source context | `documents/raw/04_frieren_modern_fantasy.txt` |
+| 5 | Steins;Gate sci-fi notes | Time-travel recommendation using MAL and IMDb source context | `documents/raw/05_steins_gate_sci_fi.txt` |
+| 6 | Neon Genesis Evangelion notes | Psychological mecha recommendation using BFI and Netflix source context | `documents/raw/06_evangelion_psychological_mecha.txt` |
+| 7 | Akira cyberpunk film notes | Landmark cyberpunk movie recommendation using Rotten Tomatoes and BFI source context | `documents/raw/07_akira_cyberpunk_film.txt` |
+| 8 | Grave of the Fireflies notes | Emotional war drama recommendation using Rotten Tomatoes and BFI source context | `documents/raw/08_grave_of_the_fireflies.txt` |
+| 9 | Attack on Titan dark action notes | Serialized action recommendation using Crunchyroll and IMDb source context | `documents/raw/09_attack_on_titan_dark_action.txt` |
+| 10 | Your Name romance gateway notes | Modern romance movie recommendation using Rotten Tomatoes and IMDb source context | `documents/raw/10_your_name_romance_gateway.txt` |
+| 11 | Mob Psycho 100 character-growth notes | Supernatural comedy/action recommendation using MAL and IMDb source context | `documents/raw/11_mob_psycho_character_growth.txt` |
+| 12 | Watch matching synthesis guide | Cross-title matching guide based on the other source notes | `documents/raw/12_watch_order_and_matching.txt` |
 
 ## Chunking Strategy
 
-**Chunk size:** 900 characters, using paragraph-aware packing before falling back to sentence/character splitting.
+**Chunk size:** 1000 characters.
 
-**Overlap:** 180 characters.
+**Overlap:** 160 characters.
 
-**Reasoning:** The corpus is made of short, student-style advice documents where each useful idea usually fits in one to three paragraphs. A 900-character target keeps a complete thought together, such as a rubric requirement plus its reason, without mixing too many unrelated topics. The 180-character overlap protects paragraph transitions, which matters when a requirement appears at the end of one paragraph and its explanation appears in the next. If chunks were much smaller, retrieval might return fragments that cannot answer a question alone; if chunks were much larger, queries about a specific rubric item could match a broad chunk with too much noise.
+**Reasoning:** Each source document is a recommendation card with three short paragraphs: why the anime is acclaimed, what the outside sources support, and when I would or would not recommend it. A 1000-character chunk usually keeps one full card together, so the retriever can return the title, source evidence, and recommendation caveat in one result. The 160-character overlap protects the boundary between source evidence and recommendation notes without creating too many duplicate hits.
 
 ## Retrieval Approach
 
 **Embedding model:** `sentence-transformers/all-MiniLM-L6-v2`.
 
-**Top-k:** 5 chunks for normal retrieval. The CLI can show fewer retrieved chunks for readability, but the generator receives up to 5.
+**Top-k:** 5 chunks for normal retrieval.
 
-**Production tradeoff reflection:** I chose `all-MiniLM-L6-v2` because it is free, local, fast, and strong enough for a small English-language student guide. In production, I would weigh accuracy on messy student language, support for longer chunks, multilingual support, latency, privacy, API reliability, and cost. A larger hosted embedding model might retrieve better answers for ambiguous questions, but it would add API latency, recurring cost, and dependency on an external service. A local model is cheaper and private, but usually less accurate than top hosted models.
+**Production tradeoff reflection:** I chose `all-MiniLM-L6-v2` because it is local, free, quick to run, and strong enough for a small English recommendation corpus. For a real anime recommendation system, I would compare retrieval quality on fuzzy taste queries, multilingual handling for Japanese titles and romanized names, latency, privacy, and cost. I would also consider a larger embedding model if it handled subjective wording like "bittersweet," "cozy," or "psychological" better.
 
-The implementation will also include hybrid search as a stretch feature. Hybrid search combines semantic similarity with BM25 keyword scoring using a weighted score of 65% semantic and 35% BM25. This should help exact rubric words such as `planning.md`, `top-k`, and `sample chunks` while keeping semantic matching for paraphrased questions.
+The implementation includes hybrid search as a stretch feature. Hybrid search combines semantic similarity and BM25 keyword scoring with a weighted score of 65% semantic and 35% BM25. This helps exact-title queries such as "Steins;Gate" or "Mob Psycho 100" while still supporting mood-based queries like "sad war movie" or "gateway anime."
 
 ## Evaluation Plan
 
 | # | Question | Expected answer |
 |---|----------|-----------------|
-| 1 | How many source documents does the project need, and how should they be identified? | At least 10 documents, pages, threads, or files; the README should identify them with specific URLs, subreddit names, file paths, or file descriptions. |
-| 2 | What chunk size and overlap does this project use, and why? | 900 characters with 180 characters of overlap; this fits short advice documents by preserving one to three paragraph thoughts while protecting transitions. |
-| 3 | Which embedding model is used, and what top-k value does retrieval use? | `sentence-transformers/all-MiniLM-L6-v2`; top-k is 5. |
-| 4 | What must the system do when a query is not supported by the retrieved documents? | It must refuse to answer and say the corpus does not contain enough information instead of guessing. |
-| 5 | What does the README evaluation report need to include for each of the five test questions? | The question, expected answer, actual system response, retrieved chunks, and an accuracy judgment. |
+| 1 | What is a good gateway anime movie for someone new to anime? | Spirited Away is a strong gateway film; Your Name is also a modern accessible option. |
+| 2 | Which anime should I watch for cyberpunk and landmark animation? | Akira. |
+| 3 | What should I watch if I want a complete adventure series with a strong ending? | Fullmetal Alchemist: Brotherhood. |
+| 4 | Which recommendation fits a recent thoughtful fantasy about memory and grief? | Frieren: Beyond Journey's End. |
+| 5 | What anime should I avoid recommending as a casual comfort watch because it is emotionally devastating? | Grave of the Fireflies. |
 
 ## Anticipated Challenges
 
-1. The embedding model may retrieve a general rubric overview when the question asks for a very specific point value or checklist item. That would be a retrieval-ranking problem, especially when semantic similarity prefers a broad document over a precise one.
+1. Mood-based queries can overlap across titles. For example, "emotional anime" could retrieve Your Name, Frieren, or Grave of the Fireflies, but those have very different viewing moods.
 
-2. Chunk boundaries could split a requirement from the explanation that makes it useful. The paragraph-aware chunker and 180-character overlap are intended to reduce this risk, but the failure analysis should still check whether missing context caused any wrong answers.
+2. Exact-title punctuation can affect retrieval. A query for "Steins Gate" without the semicolon should still find `Steins;Gate`, so hybrid search and tokenization need to help with title variants.
 
-3. The optional Groq generation step may be unavailable if no API key is set. The implementation should include a deterministic grounded fallback answerer so the project remains demoable without paid tools or secrets.
+3. The fallback answerer is extractive, so it can cite real chunks but may sound less natural than a full LLM response. I will judge the system on grounded correctness rather than polish.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-    A["Document Ingestion<br/>local .txt files + metadata parser"] --> B["Chunking<br/>paragraph-aware 900 chars + 180 overlap"]
+    A["Document Ingestion<br/>local anime recommendation notes"] --> B["Chunking<br/>paragraph-aware 1000 chars + 160 overlap"]
     B --> C["Embedding + Vector Store<br/>all-MiniLM-L6-v2 + ChromaDB"]
     C --> D["Retrieval<br/>top-k 5 semantic or hybrid BM25"]
     D --> E["Generation<br/>Groq if configured, grounded extractive fallback"]
@@ -69,8 +69,8 @@ flowchart LR
 
 ## AI Tool Plan
 
-**Milestone 3 - Ingestion and chunking:** I will direct Codex with the Documents and Chunking Strategy sections and ask it to implement a loader, cleaner, and paragraph-aware `chunk_text()` function. I expect it to produce Python code that parses metadata, strips noisy formatting, and emits chunks with source metadata. I will verify by printing at least five labeled chunks and checking that they are readable on their own.
+**Milestone 3 - Ingestion and chunking:** I will use Codex to help adapt the existing loader and chunker to the anime corpus, then verify the chunk samples myself. The main thing I will check is whether each anime card stays readable as a standalone chunk.
 
-**Milestone 4 - Embedding and retrieval:** I will direct Codex with the Retrieval Approach section and ask it to implement ChromaDB indexing, semantic search, and the hybrid BM25 comparison. I expect code that names `sentence-transformers/all-MiniLM-L6-v2`, stores chunk metadata, retrieves top-k results, and supports category filtering. I will verify using the five evaluation questions and three documented retrieval test queries.
+**Milestone 4 - Embedding and retrieval:** I will use Codex to update the evaluation questions and run semantic/hybrid retrieval tests. I will verify that exact-title questions and mood-based questions both return relevant source documents.
 
-**Milestone 5 - Generation and interface:** I will direct Codex with the Grounded Generation, Evaluation Plan, and Query Interface requirements from the assignment. I expect a CLI that accepts a question, prints a cited grounded answer, can show retrieved chunks, refuses out-of-scope questions, and supports an interactive memory mode. I will verify by running the evaluation script and recording the actual outputs in the README.
+**Milestone 5 - Generation and interface:** I will use Codex to update the CLI examples, refusal behavior, README report, and stretch-feature comparisons. I will review the actual command outputs and keep at least one honest partial failure if the system struggles.
