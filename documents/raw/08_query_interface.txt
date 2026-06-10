@@ -1,0 +1,11 @@
+Title: Student Notes - Query Interface Expectations
+Source: Local file description: peer implementation note based on Query Interface rubric
+Date: 2026-06-10
+Category: interface
+Rating: 4
+
+The interface can be simple as long as it is usable in a demo. A command-line interface is acceptable if it clearly accepts a question, optional search mode, optional metadata filters, and prints an answer with citations. The README should describe the input and output fields.
+
+A complete sample interaction transcript should show the command the user runs, the query text, the generated response, and the cited sources or retrieved chunks. The transcript should not require the grader to infer how the interface works.
+
+For this project, the CLI supports asking one question, choosing semantic or hybrid search, filtering by metadata category, showing retrieved chunks, and running an interactive memory mode. The second turn of memory mode can refer to "that requirement" or "it" and the system expands the query with the previous user question.

@@ -1,0 +1,11 @@
+Title: Student Notes - Stretch Feature Strategy
+Source: Local file description: peer stretch-feature note based on extra credit rubric
+Date: 2026-06-10
+Category: stretch
+Rating: 5
+
+Hybrid Search is worth two stretch points. To claim it, the README should describe how BM25 and semantic scores are combined and compare results on at least three queries. The source or demo should show hybrid search in operation.
+
+Chunking Strategy Comparison is worth one stretch point. The README should compare at least two chunking strategies on the same query set, state which performed better, and explain why using specific query results.
+
+Metadata Filtering is worth one stretch point. The demo or source should show a query filtered by at least one metadata field such as source, date, or rating, with a visible effect on which results are returned. Conversational Memory is worth one stretch point when a multi-turn exchange uses context from the previous question.

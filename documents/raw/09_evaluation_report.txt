@@ -1,0 +1,11 @@
+Title: Student Notes - Evaluation Report and Failure Case
+Source: Local file description: peer evaluation note based on Evaluation Report rubric
+Date: 2026-06-10
+Category: evaluation
+Rating: 5
+
+The README evaluation report must document all five test questions. Each row should include the question, expected correct answer, actual system response, retrieved chunks, and an accuracy judgment. The judgments can be accurate, partially accurate, or inaccurate.
+
+At least one failure case should be identified honestly. A useful failure explanation ties the problem to a pipeline stage. For example, if a query asks for an exact point total for a stretch feature and retrieval returns the general stretch feature overview instead of the specific rubric row, the cause is retrieval ranking, not the generator.
+
+Retrieval examples are separate from the evaluation table. The README should include at least three retrieval tests, each with the query and top returned chunks. For at least two examples, the README should explain why the returned chunks are relevant.
